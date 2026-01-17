@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Middleman Panel</h1>
+
+<div class="card">
+    <div class="card-title">Requests Assigned to You</div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Client</th>
+                <th>Service</th>
+                <th>Status</th>
+                <th>Update</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for req in assigned %}
+            <tr>
+                <td>{{ req.id }}</td>
+                <td>{{ req.client_name }}</td>
+                <td>{{ req.service_type }}</td>
+                <td>{{ req.status }}</td>
+                <td>
+                    <form method="post">
+                        <input type="hidden" name="request_id" value="{{ req.id }}">
+                        <select name="status">
+                            <option value="in_progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                        <button class="btn" type="submit">Update</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

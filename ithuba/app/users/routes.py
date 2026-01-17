@@ -14,6 +14,57 @@ def require_role(allowed_roles):
         return wrapper
     return decorator
 
+@users_bp.route("/add", methods=["GET", "POST"])
+@require_role(["owner"])
+def add_user():
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+        role = request.form["role"]
+
+        db = get_db()
+        cursor = db.cursor()
+
+        cursor.execute("""
+            INSERT INTO users (email, password, role, status)
+            VALUES (%s, %s, %s, 'pending')
+        """, (email, password, role))
+
+        db.commit()
+
+        flash("User added successfully and is now pending approval.", "success")
+        return redirect(url_for("users.manage_users"))
+
+    return render_template("users/add_user.html")
+
+@users_bp.route("/approvals", methods=["GET", "POST"])
+@require_role(["owner"])
+def approvals():
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+
+    if request.method == "POST":
+        request_id = request.form.get("request_id")
+        decision = request.form.get("decision")
+        cursor.execute(
+            "UPDATE user_approvals SET status = %s WHERE id = %s",
+            (decision, request_id),
+        )
+        db.commit()
+
+    cursor.execute("""
+        SELECT ua.id, u.email, u.role, ua.status
+        FROM user_approvals ua
+        JOIN users u ON ua.user_id = u.id
+        WHERE ua.status = 'pending'
+    """)
+    pending = cursor.fetchall()
+
+    cursor.close()
+    db.close()
+
+    return render_template("users/approvals.html", approvals=pending)
+
 @users_bp.route("/dashboard")
 @require_role(["owner", "middleman", "provider", "client", "viewer"])
 def dashboard():

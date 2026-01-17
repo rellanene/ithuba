@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="landing-hero">
+    <div class="landing-overlay"></div>
+
+    <div class="landing-content">
+        <h1 class="landing-title">Welcome to Ithuba Services</h1>
+        <p class="landing-subtitle">
+            A unified platform for service management, approvals, and workflow coordination.
+        </p>
+
+        <a href="{{ url_for('auth.login') }}" class="btn landing-btn">Get Started</a>
+    </div>
+</div>
+
+<div class="landing-sections">
+
+    <div class="card landing-card">
+        <h2>Effortless Service Requests</h2>
+        <p>
+            Submit, track, and manage service requests with ease. Designed for speed, clarity, and efficiency.
+        </p>
+    </div>
+
+    <div class="card landing-card">
+        <h2>Role‑Based Access</h2>
+        <p>
+            Whether you're an owner, provider, middleman, or client — the system adapts to your workflow.
+        </p>
+    </div>
+
+    <div class="card landing-card">
+        <h2>Secure & Reliable</h2>
+        <p>
+            Built with modern security practices and a clean, professional interface inspired by Tsogo Sun.
+        </p>
+    </div>
+
+</div>
+
+{% endblock %}

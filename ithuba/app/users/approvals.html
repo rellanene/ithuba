@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Pending Approvals</h1>
+
+<div class="card">
+    <div class="card-title">Users Awaiting Approval</div>
+
+    {% if approvals %}
+    <table>
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Decision</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for item in approvals %}
+            <tr>
+                <td>{{ item.email }}</td>
+                <td>{{ item.role }}</td>
+                <td>{{ item.status }}</td>
+                <td>
+                    <form method="post" style="display:flex; gap:10px;">
+                        <input type="hidden" name="request_id" value="{{ item.id }}">
+                        <button class="btn" name="decision" value="approved">Approve</button>
+                        <button class="btn-secondary" name="decision" value="rejected">Reject</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% else %}
+    <p>No pending approvals.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

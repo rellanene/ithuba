@@ -1,10 +1,8 @@
-from flask import Flask, redirect, url_for
+from flask import Flask, render_template
 from .config import SECRET_KEY
 from .auth import auth_bp
 from .users import users_bp
 from .services import services_bp
-
-
 
 def create_app():
     app = Flask(__name__)
@@ -15,9 +13,9 @@ def create_app():
     app.register_blueprint(users_bp)
     app.register_blueprint(services_bp)
 
-    # Root route
+    # Landing page
     @app.route("/")
     def index():
-        return redirect(url_for("auth.login"))
+        return render_template("landing.html")
 
     return app

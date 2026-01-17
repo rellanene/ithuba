@@ -2,18 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Ithuba</title>
+    <title>OnDuty</title>
+
+    <!-- Responsive design -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Load CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
 
-<nav>
-    <a href="{{ url_for('users.dashboard') }}">Dashboard</a>
-    <a href="{{ url_for('services.list_requests') }}">Services</a>
-    <a href="{{ url_for('auth.logout') }}">Logout</a>
-</nav>
+<body class="layout">
 
-<div class="container">
+<!-- NAVIGATION BAR -->
+<header class="navbar">
+    <div class="nav-left">
+        <span class="brand">OnDuty</span>
+    </div>
+
+    <nav class="nav-links">
+        <a href="{{ url_for('users.dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('services.list_requests') }}">Services</a>
+        <a href="{{ url_for('auth.logout') }}">Logout</a>
+    </nav>
+</header>
+
+<!-- MAIN CONTENT WRAPPER -->
+<main class="container">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         <ul class="flashes">
@@ -25,7 +39,12 @@
     {% endwith %}
 
     {% block content %}{% endblock %}
-</div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+    © {{ current_year }} OnDuty Services. All rights reserved.
+</footer>
 
 </body>
 </html>

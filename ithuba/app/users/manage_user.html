@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Manage Users</h1>
+
+<div class="card">
+    <div class="card-title">User Accounts</div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.email }}</td>
+                <td>{{ user.role }}</td>
+                <td>{{ user.status }}</td>
+                <td>
+                    <form method="post" style="display:flex; gap:8px;">
+                        <input type="hidden" name="user_id" value="{{ user.id }}">
+                        <button class="btn-secondary" name="action" value="activate">Activate</button>
+                        <button class="btn-secondary" name="action" value="suspend">Suspend</button>
+                        <button class="btn-secondary" name="action" value="terminate">Terminate</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

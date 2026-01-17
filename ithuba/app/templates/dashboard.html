@@ -1,25 +1,32 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Dashboard</h2>
-<p>Your role: {{ role }}</p>
 
-<ul>
-    {% if role == 'owner' %}
-        <li><a href="{{ url_for('users.manage_users') }}">Manage Users</a></li>
-		<a href="{{ url_for('users.manage_users') }}">Approvals</a>
+<div class="dashboard-header">
+    <h1>Dashboard</h1>
+    <p class="role-label">Your role: <strong>{{ role }}</strong></p>
+</div>
 
-    {% endif %}
+<div class="card">
+    <div class="card-title">Quick Actions</div>
 
-    {% if role == 'provider' %}
-        <li><a href="{{ url_for('services.create_request') }}">Create Service Request</a></li>
-    {% endif %}
+    <ul class="dashboard-links">
+        {% if role == 'owner' %}
+            <li><a class="btn" href="{{ url_for('users.manage_users') }}">Manage Users</a></li>
+            <li><a class="btn" href="{{ url_for('users.approvals') }}">Approvals</a></li>
+        {% endif %}
 
-    {% if role == 'middleman' %}
-        <li><a href="{{ url_for('services.middleman_panel') }}">Middleman Panel</a></li>
-    {% endif %}
+        {% if role == 'provider' %}
+            <li><a class="btn" href="{{ url_for('services.create_request') }}">Create Service Request</a></li>
+        {% endif %}
 
-    {% if role in ['client', 'viewer', 'provider', 'middleman', 'owner'] %}
-        <li><a href="{{ url_for('services.list_requests') }}">View Service Requests</a></li>
-    {% endif %}
-</ul>
+        {% if role == 'middleman' %}
+            <li><a class="btn" href="{{ url_for('services.middleman_panel') }}">Middleman Panel</a></li>
+        {% endif %}
+
+        {% if role in ['client', 'viewer', 'provider', 'middleman', 'owner'] %}
+            <li><a class="btn btn-secondary" href="{{ url_for('services.list_requests') }}">View Service Requests</a></li>
+        {% endif %}
+    </ul>
+</div>
+
 {% endblock %}
