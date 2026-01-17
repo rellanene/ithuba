@@ -98,6 +98,18 @@ def dashboard():
     db.close()
     return render_template("dashboard.html", role=role)
 
+@users_bp.route("/profile")
+@require_role(["owner", "middleman", "provider", "client", "viewer"])
+def profile():
+    user_id = session.get("user_id")
+
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute("SELECT id, email, role, status FROM users WHERE id=%s", (user_id,))
+    user = cursor.fetchone()
+
+    return render_template("users/profile.html", user=user)
+
 @users_bp.route("/manage", methods=["GET", "POST"])
 @require_role(["owner"])
 def manage_users():

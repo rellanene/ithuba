@@ -1,4 +1,31 @@
 /* ============================
+   USER PROFILE PAGE
+   ============================ */
+
+.profile-card {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.profile-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.profile-label {
+    font-weight: 600;
+    color: var(--charcoal);
+}
+
+.profile-value {
+    color: var(--gold);
+    font-weight: 600;
+}
+
+
+/* ============================
    LAYOUT FIX — STICKY FOOTER
    ============================ */
 
