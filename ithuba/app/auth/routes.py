@@ -35,6 +35,28 @@ def login():
 
     return render_template("login.html")
 
+@auth_bp.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+
+        db = get_db()
+        cursor = db.cursor()
+
+        # All new accounts are CLIENTS
+        cursor.execute("""
+            INSERT INTO users (email, password, role, status)
+            VALUES (%s, %s, 'client', 'pending')
+        """, (email, password))
+
+        db.commit()
+
+        flash("Account created! Waiting for approval.", "success")
+        return redirect(url_for("auth.login"))
+
+    return render_template("register.html")
+
 
 
 

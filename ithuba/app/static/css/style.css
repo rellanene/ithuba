@@ -1,3 +1,119 @@
+/* NAV ITEM STYLE (default background like Manage Users / Approvals) */
+.nav-item {
+    padding: 8px 14px;
+    background: var(--charcoal);   /* Default background */
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-block;
+}
+
+/* Hover effect */
+.nav-item:hover {
+    background: #2f2f2f;
+}
+
+/* Dropdown label inherits the same style */
+.nav-item .nav-label {
+    color: white;
+    text-decoration: none;
+}
+
+/* Dropdown container */
+.dropdown {
+    position: relative;
+}
+
+/* Dropdown menu */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background: white;
+    min-width: 180px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    border-radius: 6px;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 10px 15px;
+    color: var(--charcoal);
+    text-decoration: none;
+}
+
+.dropdown-content a:hover {
+    background: #f2f2f2;
+}
+
+/* Show dropdown on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* NAVBAR CLEANUP */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 25px;
+    background: var(--charcoal);
+    color: white;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropbtn {
+    background: none;
+    border: none;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background: white;
+    min-width: 180px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    border-radius: 6px;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 10px 15px;
+    color: var(--charcoal);
+    text-decoration: none;
+}
+
+.dropdown-content a:hover {
+    background: #f2f2f2;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
 /* ============================
    USER PROFILE PAGE
    ============================ */
@@ -142,6 +258,11 @@ html, body {
 /* ============================
    LOGIN PAGE STYLING
    ============================ */
+   
+   .login-extra {
+       margin-top: 15px;
+       text-align: center;
+   }
 
 .login-wrapper {
     display: flex;

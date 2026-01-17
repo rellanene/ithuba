@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Service Types</h1>
+
+<a href="{{ url_for('services.add_service_type') }}" class="btn">Add New Service Type</a>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for t in types %}
+            <tr>
+                <td>{{ t.name }}</td>
+                <td>{{ t.description }}</td>
+                <td>{{ t.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

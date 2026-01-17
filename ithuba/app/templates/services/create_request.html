@@ -3,7 +3,12 @@
 <h2>Create Service Request</h2>
 <form method="post">
     <label>Title</label>
-    <input type="text" name="title" required>
+	<label>Service Type</label>
+	<select name="service_type" required>
+	    {% for t in types %}
+	        <option value="{{ t.id }}">{{ t.name }}</option>
+	    {% endfor %}
+	</select>
     <label>Description</label>
     <textarea name="description" required></textarea>
     <button type="submit">Submit</button>

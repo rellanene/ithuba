@@ -1,3 +1,7 @@
+{% if session.role in ["owner", "middleman", "client", "provider"] %}
+    <a href="{{ url_for('services.create_request') }}" class="btn">Create New Request</a>
+{% endif %}
+
 {% extends "base.html" %}
 {% block content %}
 <h2>Service Requests</h2>

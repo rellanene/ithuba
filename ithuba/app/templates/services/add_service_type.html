@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Add Service Type</h1>
+
+<div class="card">
+    <form method="post">
+
+        <label>Service Name</label>
+        <input type="text" name="name" required>
+
+        <label>Description</label>
+        <textarea name="description"></textarea>
+
+        <button class="btn" type="submit">Add Service Type</button>
+    </form>
+</div>
+
+{% endblock %}

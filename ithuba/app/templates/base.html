@@ -16,14 +16,42 @@
 <!-- NAVIGATION BAR -->
 <header class="navbar">
     <div class="nav-left">
-        <span class="brand">OnDuty</span>
+        <span class="brand">DutyDay</span>
     </div>
 
     <nav class="nav-links">
-        <a href="{{ url_for('users.dashboard') }}">Dashboard</a>
-		<a href="{{ url_for('users.profile') }}">Profile</a>
-        <a href="{{ url_for('services.list_requests') }}">Services</a>
-        <a href="{{ url_for('auth.logout') }}">Logout</a>
+
+        <a class="nav-item" href="{{ url_for('users.dashboard') }}">Dashboard</a>
+
+		<div class="nav-item dropdown">
+		    <span class="nav-label">Services ▾</span>
+		    <div class="dropdown-content">
+
+
+                <a href="{{ url_for('services.list_requests') }}">All Requests</a>
+                <a href="{{ url_for('services.create_request') }}">Create Request</a>
+                <a href="{{ url_for('services.list_service_types') }}">Service Types</a>
+
+                {% if session.role == 'middleman' %}
+                    <a href="{{ url_for('services.middleman_panel') }}">Middleman Panel</a>
+                {% endif %}
+
+                {% if session.role == 'owner' %}
+                    <a href="{{ url_for('services.owner_panel') }}">Owner Panel</a>
+                {% endif %}
+            </div>
+        </div>
+
+		<div class="nav-item dropdown">
+		    <span class="nav-label">Account ▾</span>
+		    <div class="dropdown-content">
+
+
+                <a href="{{ url_for('users.profile') }}">Profile</a>
+                <a href="{{ url_for('auth.logout') }}">Logout</a>
+            </div>
+        </div>
+
     </nav>
 </header>
 
