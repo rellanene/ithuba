@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>User Approvals</h2>
+
+<table>
+    <tr>
+        <th>ID</th><th>Email</th><th>Role</th><th>Status</th><th>Action</th>
+    </tr>
+    {% for a in approvals %}
+    <tr>
+        <td>{{ a.id }}</td>
+        <td>{{ a.email }}</td>
+        <td>{{ a.role }}</td>
+        <td>{{ a.status }}</td>
+        <td>
+            <form method="post">
+                <input type="hidden" name="request_id" value="{{ a.id }}">
+                <button name="decision" value="approved">Approve</button>
+                <button name="decision" value="rejected">Reject</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,200 @@
+/* ============================
+   GLOBAL THEME — TSOGO SUN STYLE
+   ============================ */
+   
+   
+
+/* Color palette */
+:root {
+    --gold: #c9a86a;
+    --gold-light: #e7d4a8;
+    --charcoal: #1f1f1f;
+    --charcoal-light: #2b2b2b;
+    --grey: #f5f5f5;
+    --white: #ffffff;
+    --text-dark: #333333;
+    --text-light: #f0f0f0;
+    --shadow: rgba(0,0,0,0.15);
+}
+
+/* Reset */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Roboto, sans-serif;
+    background: var(--grey);
+    color: var(--text-dark);
+}
+
+/* ============================
+   NAVIGATION BAR
+   ============================ */
+nav {
+    background: var(--charcoal);
+    padding: 15px 40px;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    box-shadow: 0 2px 6px var(--shadow);
+}
+
+nav a {
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+    transition: 0.3s ease;
+}
+
+nav a:hover {
+    color: var(--gold-light);
+}
+
+/* ============================
+   CONTAINER
+   ============================ */
+.container {
+    max-width: 1100px;
+    margin: 40px auto;
+    background: var(--white);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px var(--shadow);
+}
+
+/* ============================
+   FLASH MESSAGES
+   ============================ */
+.flashes {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.flashes li {
+    padding: 12px 18px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.success {
+    background: #d4edda;
+    color: #155724;
+}
+
+.danger {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.info {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+/* ============================
+   BUTTONS
+   ============================ */
+button, .btn {
+    background: var(--gold);
+    color: var(--charcoal);
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+button:hover, .btn:hover {
+    background: var(--gold-light);
+}
+
+/* Secondary button */
+.btn-secondary {
+    background: var(--charcoal-light);
+    color: var(--white);
+}
+
+.btn-secondary:hover {
+    background: var(--charcoal);
+}
+
+/* ============================
+   TABLES
+   ============================ */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table thead {
+    background: var(--charcoal);
+    color: var(--gold);
+}
+
+table th, table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+table tr:hover {
+    background: #fafafa;
+}
+
+/* ============================
+   FORMS
+   ============================ */
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* ============================
+   HEADINGS
+   ============================ */
+h1, h2, h3 {
+    color: var(--charcoal);
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+h1 {
+    border-left: 6px solid var(--gold);
+    padding-left: 12px;
+}
+
+/* ============================
+   CARDS (for dashboards)
+   ============================ */
+.card {
+    background: var(--white);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px var(--shadow);
+    margin-bottom: 20px;
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--charcoal);
+}
+
+.card-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--gold);
+}

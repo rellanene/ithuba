@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Service Requests</h2>
+
+<table>
+    <tr>
+        <th>ID</th><th>Title</th><th>Provider</th><th>Status</th><th>Actions</th>
+    </tr>
+    {% for r in requests %}
+    <tr>
+        <td>{{ r.id }}</td>
+        <td>{{ r.title }}</td>
+        <td>{{ r.provider_email }}</td>
+        <td>{{ r.status }}</td>
+        <td>
+            <a href="{{ url_for('services.request_detail', request_id=r.id) }}">View</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

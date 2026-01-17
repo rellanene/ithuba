@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Create Service Request</h2>
+<form method="post">
+    <label>Title</label>
+    <input type="text" name="title" required>
+    <label>Description</label>
+    <textarea name="description" required></textarea>
+    <button type="submit">Submit</button>
+</form>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Request #{{ req.id }}</h2>
+<p><strong>Title:</strong> {{ req.title }}</p>
+<p><strong>Description:</strong> {{ req.description }}</p>
+<p><strong>Provider:</strong> {{ req.provider_email }}</p>
+<p><strong>Client:</strong> {{ req.client_email or 'N/A' }}</p>
+<p><strong>Status:</strong> {{ req.status }}</p>
+
+{% if session.role == 'client' %}
+<form method="post">
+    <button name="decision" value="accept">Accept</button>
+    <button name="decision" value="decline">Decline</button>
+</form>
+{% endif %}
+{% endblock %}
