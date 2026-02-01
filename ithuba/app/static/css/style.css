@@ -1,3 +1,125 @@
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 15px;
+}
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.analytics-card {
+    height: 350px; /* keeps cards short and landscape */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.analytics-card canvas {
+    max-height: 260px;
+}
+
+.analytics-card {
+    margin-top: 20px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.stat-box {
+    background: #f7f7f7;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.stat-box h3 {
+    margin: 0;
+    font-size: 28px;
+    color: var(--charcoal);
+}
+
+.stat-box p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.analytics-card {
+    margin-top: 20px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.stat-box {
+    background: #f7f7f7;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.stat-box h3 {
+    margin: 0;
+    font-size: 28px;
+    color: var(--charcoal);
+}
+
+.stat-box p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.chat-box {
+    background: #f7f7f7;
+    padding: 15px;
+    border-radius: 8px;
+    max-height: 350px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+}
+
+.chat-message {
+    background: white;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    border-left: 4px solid var(--charcoal);
+}
+
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.chat-form textarea {
+    width: 100%;
+    height: 90px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.chat-form button {
+    margin-top: 10px;
+}
+
 /* NAV ITEM STYLE (default background like Manage Users / Approvals) */
 .nav-item {
     padding: 8px 14px;
@@ -171,7 +293,7 @@ html, body {
 .landing-hero {
     position: relative;
     height: 380px;
-    background: url('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267') center/cover no-repeat;
+    background: url('https://i.pinimg.com/originals/d6/7c/be/d67cbea3711a42d7efc9cb5c234f8dce.jpg') center/cover no-repeat;
     border-radius: 12px;
     overflow: hidden;
     margin-bottom: 40px;

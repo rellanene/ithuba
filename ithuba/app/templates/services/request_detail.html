@@ -1,16 +1,80 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Request #{{ req.id }}</h2>
-<p><strong>Title:</strong> {{ req.title }}</p>
-<p><strong>Description:</strong> {{ req.description }}</p>
-<p><strong>Provider:</strong> {{ req.provider_email }}</p>
-<p><strong>Client:</strong> {{ req.client_email or 'N/A' }}</p>
-<p><strong>Status:</strong> {{ req.status }}</p>
 
-{% if session.role == 'client' %}
-<form method="post">
-    <button name="decision" value="accept">Accept</button>
-    <button name="decision" value="decline">Decline</button>
+<h1>Service Request #{{ req.id }}</h1>
+
+<div class="card">
+    <h3>Service Type</h3>
+    <p>{{ req.service_type }}</p>
+
+    <h3>Description</h3>
+    <p>{{ req.description }}</p>
+
+    <h3>Status</h3>
+    <p>{{ req.status }}</p>
+</div>
+
+<hr>
+
+<h2>Messages</h2>
+
+<div class="chat-box">
+    {% if messages %}
+        {% for m in messages %}
+            <div class="chat-message">
+                <div class="chat-header">
+                    <strong>{{ m.email }}</strong>
+                    <small>{{ m.created_at }}</small>
+                </div>
+
+                <p>{{ m.message }}</p>
+
+                {# ---------------- FILE PREVIEWS INSIDE MESSAGE ---------------- #}
+                {% for f in files %}
+                    {% if f.user_id == m.user_id and f.uploaded_at == m.created_at %}
+
+                        {# IMAGE PREVIEW #}
+                        {% if f.filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')) %}
+                            <img src="{{ url_for('uploaded_file', filename=f.filename) }}"
+                                 style="max-width: 250px; border-radius: 8px; margin-top: 10px;">
+                        {% endif %}
+
+                        {# PDF PREVIEW #}
+                        {% if f.filename.lower().endswith('.pdf') %}
+                            <embed src="{{ url_for('uploaded_file', filename=f.filename) }}"
+                                   type="application/pdf"
+                                   width="300" height="200"
+                                   style="margin-top: 10px; border: 1px solid #ccc;">
+                        {% endif %}
+
+                        {# OTHER FILE TYPES (DOCX, XLSX, ZIP, ETC.) #}
+                        {% if f.filename.lower().endswith(('.docx', '.xlsx', '.zip')) %}
+                            <a href="{{ url_for('uploaded_file', filename=f.filename) }}"
+                               class="btn btn-sm btn-secondary"
+                               target="_blank"
+                               style="margin-top: 10px;">
+                                Download {{ f.filename }}
+                            </a>
+                        {% endif %}
+
+                    {% endif %}
+                {% endfor %}
+                {# -------------------------------------------------------------- #}
+
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No messages yet. Start the conversation below.</p>
+    {% endif %}
+</div>
+
+
+<form method="post" enctype="multipart/form-data" class="chat-form">
+    <textarea name="message" placeholder="Type your message..."></textarea>
+
+    <input type="file" name="file">
+
+    <button type="submit" class="btn">Send</button>
 </form>
-{% endif %}
+
 {% endblock %}

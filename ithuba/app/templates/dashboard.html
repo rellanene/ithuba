@@ -6,6 +6,7 @@
     <p class="role-label">Your role: <strong>{{ role }}</strong></p>
 </div>
 
+<!-- QUICK ACTIONS -->
 <div class="card">
     <div class="card-title">Quick Actions</div>
 
@@ -28,5 +29,91 @@
         {% endif %}
     </ul>
 </div>
+
+<!-- OWNER-ONLY METRICS -->
+{% if role == 'owner' %}
+<div class="card analytics-card">
+    <div class="card-title">Owner Overview</div>
+
+    <div class="stats-grid">
+        <div class="stat-box">
+            <h3>{{ total_users }}</h3>
+            <p>Total Users</p>
+        </div>
+
+        <div class="stat-box">
+            <h3>{{ pending_approvals }}</h3>
+            <p>Pending Approvals</p>
+        </div>
+
+        <div class="stat-box">
+            <h3>{{ total_requests }}</h3>
+            <p>Total Requests</p>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- ANALYTICS FOR ALL ROLES -->
+<div class="card analytics-card">
+    <div class="card-title">Requests Overview</div>
+
+    <div class="stats-grid">
+        <div class="stat-box">
+            <h3>{{ total_requests }}</h3>
+            <p>Total Requests</p>
+        </div>
+
+        {% for item in status_counts %}
+        <div class="stat-box">
+            <h3>{{ item.count }}</h3>
+            <p>{{ item.status | replace('_', ' ') | title }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- CHART: REQUESTS BY STATUS -->
+<div class="card">
+    <div class="card-title">Requests by Status</div>
+    <canvas id="statusChart"></canvas>
+</div>
+
+<!-- CHART: REQUESTS BY SERVICE TYPE -->
+<div class="card">
+    <div class="card-title">Requests by Service Type</div>
+    <canvas id="typeChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+new Chart(document.getElementById("statusChart"), {
+    type: "pie",
+    data: {
+        labels: {{ status_counts | map(attribute='status') | list }},
+        datasets: [{
+            data: {{ status_counts | map(attribute='count') | list }},
+            backgroundColor: ["#4CAF50", "#FFC107", "#F44336", "#2196F3", "#9C27B0"]
+        }]
+    }
+});
+
+new Chart(document.getElementById("typeChart"), {
+    type: "bar",
+    data: {
+        labels: {{ type_counts | map(attribute='type') | list }},
+        datasets: [{
+            label: "Requests",
+            data: {{ type_counts | map(attribute='count') | list }},
+            backgroundColor: "#2196F3"
+        }]
+    }
+});
+</script>
+
+{% if role in ['owner', 'middleman'] %}
+    <li><a class="btn btn-secondary" href="{{ url_for('services.export_requests_csv') }}">Export Requests (CSV)</a></li>
+{% endif %}
 
 {% endblock %}

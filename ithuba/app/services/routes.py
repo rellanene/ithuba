@@ -86,36 +86,152 @@ def list_service_types():
 
 
 # ---------------- REQUEST DETAIL (CLIENT) ----------------
+from werkzeug.utils import secure_filename
+from flask import current_app
+import os
+
+
 @services_bp.route("/<int:request_id>", methods=["GET", "POST"])
-@require_role(["client"])
+@require_role(["client", "provider", "middleman", "owner"])
 def request_detail(request_id):
     db = get_db()
     cursor = db.cursor(dictionary=True)
 
+    user_id = session.get("user_id")
+
+    # ---------------- HANDLE POST (message + file) ----------------
     if request.method == "POST":
-        decision = request.form.get("decision")
-        client_id = session.get("user_id")
 
-        if decision == "accept":
+        # Save message
+        if "message" in request.form and request.form["message"].strip():
+            msg = request.form["message"]
             cursor.execute("""
-                UPDATE service_requests
-                SET status = 'accepted_by_client', client_id = %s
-                WHERE id = %s
-            """, (client_id, request_id))
+                INSERT INTO request_messages (request_id, user_id, message)
+                VALUES (%s, %s, %s)
+            """, (request_id, user_id, msg))
+            db.commit()
 
-        elif decision == "decline":
-            cursor.execute(
-                "UPDATE service_requests SET status = 'declined_by_client' WHERE id = %s",
-                (request_id,)
-            )
+        # Save file
+        if "file" in request.files:
+            file = request.files["file"]
 
-        db.commit()
+            if file and file.filename.strip():
+                filename = secure_filename(file.filename)
+                filepath = os.path.join(current_app.config["UPLOAD_FOLDER"], filename)
+                file.save(filepath)
+
+                cursor.execute("""
+                    INSERT INTO request_files (request_id, user_id, filename)
+                    VALUES (%s, %s, %s)
+                """, (request_id, user_id, filename))
+                db.commit()
+
+    # ---------------- LOAD REQUEST ----------------
+    req = get_request_by_id(request_id)
+
+    # ---------------- LOAD MESSAGES ----------------
+    cursor.execute("""
+        SELECT rm.*, u.email
+        FROM request_messages rm
+        JOIN users u ON rm.user_id = u.id
+        WHERE rm.request_id = %s
+        ORDER BY rm.created_at ASC
+    """, (request_id,))
+    messages = cursor.fetchall()
+
+    # ---------------- LOAD FILES ----------------
+    cursor.execute("""
+        SELECT rf.*, u.email
+        FROM request_files rf
+        JOIN users u ON rf.user_id = u.id
+        WHERE rf.request_id = %s
+        ORDER BY rf.uploaded_at ASC
+    """, (request_id,))
+    files = cursor.fetchall()
 
     cursor.close()
     db.close()
 
-    req = get_request_by_id(request_id)
-    return render_template("services/request_detail.html", req=req)
+    return render_template(
+        "services/request_detail.html",
+        req=req,
+        messages=messages,
+        files=files
+    )
+
+#-----------DASHBOARD-----------
+# ----------- DASHBOARD -----------
+@services_bp.route("/dashboard")
+@require_role(["owner", "middleman"])
+def dashboard():
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+
+    # Total counts
+    cursor.execute("SELECT COUNT(*) AS total FROM service_requests")
+    total = cursor.fetchone()["total"]
+
+    cursor.execute("SELECT status, COUNT(*) AS count FROM service_requests GROUP BY status")
+    status_counts = cursor.fetchall()
+
+    cursor.execute("""
+        SELECT st.name, COUNT(*) AS count
+        FROM service_requests sr
+        JOIN service_types st ON sr.service_type_id = st.id
+        GROUP BY st.name
+    """)
+    type_counts = cursor.fetchall()
+
+    cursor.close()
+    db.close()
+
+    return render_template(
+        "services/dashboard.html",
+        total=total,
+        status_counts=status_counts,
+        type_counts=type_counts
+    )
+
+
+# ----------- EXPORT TO CSV -----------
+@services_bp.route("/export/requests/csv")
+@require_role(["owner", "middleman"])
+def export_requests_csv():
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT id, client_id, provider_id, service_type_id, status, created_at
+        FROM service_requests
+    """)
+    rows = cursor.fetchall()
+
+    import csv
+    from io import StringIO
+    from flask import make_response
+
+    output = StringIO()
+    writer = csv.writer(output)
+
+    writer.writerow(["ID", "Client", "Provider", "Service Type", "Status", "Created At"])
+
+    for r in rows:
+        writer.writerow([
+            r["id"],
+            r["client_id"],
+            r["provider_id"],
+            r["service_type_id"],
+            r["status"],
+            r["created_at"]
+        ])
+
+    response = make_response(output.getvalue())
+    response.headers["Content-Disposition"] = "attachment; filename=requests.csv"
+    response.headers["Content-Type"] = "text/csv"
+
+    return response
+    
+    
 
 @services_bp.route("/owner", methods=["GET", "POST"])
 @require_role(["owner"])

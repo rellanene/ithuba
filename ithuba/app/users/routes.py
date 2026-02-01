@@ -69,9 +69,12 @@ def approvals():
 @require_role(["owner", "middleman", "provider", "client", "viewer"])
 def dashboard():
     role = session.get("role")
-
     db = get_db()
     cursor = db.cursor(dictionary=True)
+
+    # ---------- OWNER-SPECIFIC METRICS ----------
+    total_users = None
+    pending_approvals = None
 
     if role == "owner":
         cursor.execute("SELECT COUNT(*) AS total FROM users")
@@ -80,23 +83,39 @@ def dashboard():
         cursor.execute("SELECT COUNT(*) AS pending FROM user_approvals WHERE status='pending'")
         pending_approvals = cursor.fetchone()["pending"]
 
-        cursor.execute("SELECT COUNT(*) AS requests FROM service_requests")
-        total_requests = cursor.fetchone()["requests"]
+    # ---------- ANALYTICS FOR ALL ROLES ----------
+    cursor.execute("SELECT COUNT(*) AS total FROM service_requests")
+    total_requests = cursor.fetchone()["total"]
 
-        cursor.close()
-        db.close()
+    cursor.execute("""
+        SELECT status, COUNT(*) AS count
+        FROM service_requests
+        GROUP BY status
+    """)
+    status_counts = cursor.fetchall()
 
-        return render_template(
-            "dashboard.html",
-            role=role,
-            total_users=total_users,
-            pending_approvals=pending_approvals,
-            total_requests=total_requests
-        )
+    cursor.execute("""
+        SELECT st.name AS type, COUNT(*) AS count
+        FROM service_requests sr
+        JOIN service_types st ON sr.service_type_id = st.id
+        GROUP BY st.name
+    """)
+    type_counts = cursor.fetchall()
 
     cursor.close()
     db.close()
-    return render_template("dashboard.html", role=role)
+
+    return render_template(
+        "dashboard.html",
+        role=role,
+        total_users=total_users,
+        pending_approvals=pending_approvals,
+        total_requests=total_requests,
+        status_counts=status_counts,
+        type_counts=type_counts
+    )
+
+
 
 @users_bp.route("/profile")
 @require_role(["owner", "middleman", "provider", "client", "viewer"])
